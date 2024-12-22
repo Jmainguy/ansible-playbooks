@@ -1,17 +1,20 @@
 ---
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
 - name: Set timezone to Eastern
   ansible.builtin.command:
     cmd: timedatectl set-timezone America/New_York
   when: ansible_date_time.tz not in ['EST', 'EDT']
 
-- name: Install cron package
-  ansible.builtin.package:
-    name: cron
-    state: present
-
-- name: Install podman package
-  ansible.builtin.package:
-    name: podman
+- name: Install a list of packages
+  ansible.builtin.apt:
+    name:
+      - iputils-ping
+      - cron
+      - podman
+      - wireguard
     state: present
 
 - name: Symlink Docker to Podman
@@ -26,15 +29,15 @@
     state: started
     enabled: true
 
-- name: Create cron job for reboot every 4 hours
+- name: Create cron job for deleting stale containers
   ansible.builtin.cron:
-    name: "Reboot every 4 hours"
+    name: "delete stale dockers on reboot"
     special_time: reboot
     job: "/usr/bin/docker rm $(/usr/bin/docker ps -qa)"
 
 - name: Create cron job for reboot every 4 hours
   ansible.builtin.cron:
-    name: "delete stale dockers on reboot"
+    name: "Reboot every 4 hours"
     minute: "0"
     hour: "*/4"
     job: "/sbin/reboot"
@@ -54,3 +57,44 @@
     name: soh-router
     state: started
     enabled: true
+
+- name: Ensure WireGuard directory exists
+  file:
+    path: /etc/wireguard
+    state: directory
+    mode: '0755'
+
+- name: Generate WireGuard private key if missing
+  ansible.builtin.shell: |
+    wg genkey > {{ inventory_hostname }}.private.key
+  args:
+    chdir: /etc/wireguard/
+    creates: /etc/wireguard/{{ inventory_hostname }}.private.key
+
+- name: Generate WireGuard public key if missing
+  ansible.builtin.shell: 
+    cat {{ inventory_hostname }}.private.key | wg pubkey > {{ inventory_hostname }}.public.key
+  args:
+    chdir: /etc/wireguard/
+    creates: /etc/wireguard/{{ inventory_hostname }}.public.key
+
+- name: Read private key from the remote host
+  slurp:
+    src: /etc/wireguard/{{ inventory_hostname }}.private.key
+  register: private_key_content
+
+- name: Set private key as a fact
+  set_fact:
+    wireguard_private_key: "{{ private_key_content.content | b64decode | replace('\n', '') }}"
+
+- name: Copy WireGuard configuration template
+  template:
+    src: homelab.conf
+    dest: /etc/wireguard/homelab.conf
+    mode: '0600'
+
+- name: Enable and start WireGuard service
+  systemd:
+    name: wg-quick@homelab
+    enabled: true
+    state: started
