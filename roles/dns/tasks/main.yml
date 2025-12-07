@@ -23,4 +23,5 @@
     - southridingagents.com
     - standouthost.com
     - vpsaddict.com
+    - ahhc.org
   notify: Restart nsd

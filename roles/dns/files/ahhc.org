@@ -1,0 +1,27 @@
+; BIND db file for ahhc.org
+
+$TTL 3600
+$ORIGIN ahhc.org.
+
+@       IN      SOA     ns1.vpsaddict.com.        jon.soh.re. (
+                        2025100202      ; serial number YYYYMMDDnn
+                        14400           ; Refresh
+                        3600            ; Retry
+                        1209600         ; Expire
+                        3600            ; Min TTL
+                        )
+
+@               IN         NS      ns1.vpsaddict.com.
+@               IN         NS      ns2.vpsaddict.com.
+@               IN         NS      ns3.vpsaddict.com.
+@               MX      0  ahhc-org.mail.protection.outlook.com.
+@               IN      TXT     "v=spf1 include:spf.protection.outlook.com ip4:72.167.37.116 -all"
+@               IN      TXT     "MS=ms72429397"
+
+
+		IN      A	68.183.148.253
+		IN      AAAA	2604:a880:800:14::2fda:a000
+www		IN      CNAME   homelab.soh.re.
+autodiscover	IN      CNAME   autodiscover.outlook.com.
+20210709-jgzgbm6s._domainkey	IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSrgZKjMRtaB1w0FZfsM6gMTr+MU5AOp/Pqy8vg2YyGWyQGo5vtwJrIuV9ouxvK40VGU4VTpYxg9i6Jdn0d8VQTnRuvfOBIn7aftzIzXU6ERQwuUNycvE4kQB1UVW15A9mM74S5io8iKzHjTqo19xK5SD47PjP0ncE8rP/FwtJzQIDAQAB"
+_dmarc		IN	TXT	"v=DMARC1; p=none; rua=mailto:dmarc@ahhc.org"

@@ -7,4 +7,21 @@
       - open-iscsi
       - nfs-common
       - cryptsetup
+      - dmsetup
     state: present
+
+- name: Copy sysctl.conf to /etc/sysctl.conf
+  ansible.builtin.copy:
+    src: sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy /etc/security/limits.conf
+  ansible.builtin.copy:
+    src: limits.conf
+    dest: /etc/security/limits.conf
+    owner: root
+    group: root
+    mode: '0644'

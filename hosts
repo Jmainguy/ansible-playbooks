@@ -10,16 +10,15 @@ ns2.vpsaddict.com
 ns3.vpsaddict.com
 
 [sohre]
-vm1.soh.re wireguard_ip=10.0.0.9
-vm2.soh.re wireguard_ip=10.0.0.10
 vm3.soh.re wireguard_ip=10.0.0.20
 vm4.soh.re wireguard_ip=10.0.0.21
 
 [k3s]
-lenovo-laptop
 black-intel
 white-intel
 k3s.soh.re
 
 [common]
 piaware
+vm1.soh.re wireguard_ip=10.0.0.9
+vm2.soh.re wireguard_ip=10.0.0.10
