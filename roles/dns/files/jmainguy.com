@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN jmainguy.com.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.jmainguy.com. (
-                        2024102902      ; serial number YYYYMMDDnn
+                        2026020401      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -27,3 +27,4 @@ $ORIGIN jmainguy.com.
 www             IN	CNAME	homelab.soh.re.
 mail            IN      CNAME   ghs.google.com.
 ip		IN	CNAME	homelab.soh.re.
+condo		IN	CNAME	homelab.soh.re.

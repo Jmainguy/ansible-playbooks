@@ -24,4 +24,6 @@
     - standouthost.com
     - vpsaddict.com
     - ahhc.org
+    - harborvane.io
+    - harborvane.com
   notify: Restart nsd
