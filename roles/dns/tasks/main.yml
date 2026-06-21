@@ -26,4 +26,5 @@
     - ahhc.org
     - harborvane.io
     - harborvane.com
+    - verboseresume.com
   notify: Restart nsd

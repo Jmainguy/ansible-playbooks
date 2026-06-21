@@ -1,10 +1,10 @@
-; BIND db file for harborvane.io
+; BIND db file for verboseresume.com
 
 $TTL 3600
-$ORIGIN harborvane.io.
+$ORIGIN verboseresume.com.
 
-@       IN      SOA     ns1.vpsaddict.com.        jon.harborvane.io. (
-                        2026022604      ; serial number YYYYMMDDnn
+@       IN      SOA     ns1.vpsaddict.com.        jon.verboseresume.io. (
+                        2026052001      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire

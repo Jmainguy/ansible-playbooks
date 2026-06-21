@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN soh.re.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.soh.re. (
-                        2026013104      ; serial number YYYYMMDDnn
+                        2026060101      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -22,11 +22,13 @@ $ORIGIN soh.re.
 		IN      A	68.183.148.253
 		IN      AAAA	2604:a880:800:14::2fda:a000
 www		IN      CNAME   homelab.soh.re.
+babo		IN      CNAME   homelab.soh.re.
 nextcloud	IN	CNAME   homelab.soh.re.
 etherpad	IN	CNAME   homelab.soh.re.
 statuscode	IN	CNAME   homelab.soh.re.
 hey		IN	CNAME   homelab.soh.re.
 math-quest	IN	CNAME   homelab.soh.re.
+passbolt	IN	CNAME   homelab.soh.re.
 status		IN	CNAME	fragrant-waterfall-5930.fly.dev.
 vm1		IN	A	144.24.175.43
 vm2		IN	A	130.162.253.253
@@ -43,6 +45,7 @@ hockey		IN	CNAME	homelab.soh.re.
 mastermind	IN	CNAME	homelab.soh.re.
 bible		IN	CNAME	homelab.soh.re.
 immich		IN	CNAME	homelab.soh.re.
+shoreline	IN	CNAME	homelab.soh.re.
 homelab		IN	A	68.183.148.253
 homelab		IN      AAAA    2604:a880:800:14::2fda:a000
 k3s		IN	A	130.61.223.167
