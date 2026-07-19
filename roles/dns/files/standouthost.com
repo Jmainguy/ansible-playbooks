@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN standouthost.com.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.standouthost.com. (
-                        2026011701      ; serial number YYYYMMDDnn
+                        2026071801      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -23,6 +23,4 @@ $ORIGIN standouthost.com.
                 IN      A       68.183.148.253
                 IN      AAAA    2604:a880:800:14::2fda:a000
 www             IN      CNAME   homelab.soh.re.
-augustine	IN	A	44.204.12.80
-ahhc-preview      IN      CNAME   homelab.soh.re.
 zmail._domainkey IN	TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC0/4ia1N2XVfTw7emk6dqbjvIatRK3RipuYGQ56obm0ueYRDOxnnvRp/i0/UCYvdY6dDGhI4CGpKoGg7C1mxCZRv6yGHirxCm2rAFo3rT0Z0yR+aVLF6WcUUW4Efb+XUVbWRYxrCSP/4BBfIEauab2Lgcq0sI1/9vLhDt0NkBYYwIDAQAB"
