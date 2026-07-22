@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN augustine.care.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.soh.re. (
-                        2026071901      ; serial number YYYYMMDDnn
+                        2026072001      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -14,7 +14,15 @@ $ORIGIN augustine.care.
 @               IN         NS      ns1.vpsaddict.com.
 @               IN         NS      ns2.vpsaddict.com.
 @               IN         NS      ns3.vpsaddict.com.
+@               IN         TXT     "v=spf1 include:zohomail.com ~all"
+@               IN         TXT     "zoho-verification=zb62843879.zmverify.zoho.com"
+@               MX      10 mx.zoho.com.
+@               MX      20 mx2.zoho.com.
+@               MX      50 mx3.zoho.com.
+
+
 
                 IN      A       68.183.148.253
                 IN      AAAA    2604:a880:800:14::2fda:a000
 www             IN      CNAME   homelab.soh.re.
+dkim._domainkey IN      TXT     "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCZ1vQc3VKRoipmuOys6j3A4LDjvA+S5i7IcWTsu0ukY2Pkf079tzrWmyu7TYoHJ5I17mAOnngsPV314UB9S2NvdT3F0p/cvFaAO9urvBk4/C+Ea2hzN2bhDK4/O/3o7QvOCpBmXVsUIaFXVgkNFLNY4drYDZGHn/+WxXbVPxwWmQIDAQAB"
