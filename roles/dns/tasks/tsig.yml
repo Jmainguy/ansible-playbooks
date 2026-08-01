@@ -1,0 +1,13 @@
+---
+- name: Generate RFC2136 TSIG key if missing
+  ansible.builtin.shell: |
+    tsig-keygen -a HMAC-SHA256 {{ dns_tsig_key_name }} > {{ dns_tsig_key_path }}
+  args:
+    creates: "{{ dns_tsig_key_path }}"
+
+- name: Restrict TSIG key permissions
+  ansible.builtin.file:
+    path: "{{ dns_tsig_key_path }}"
+    owner: root
+    group: bind
+    mode: "0640"

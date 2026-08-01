@@ -1,6 +1,6 @@
 ---
 
-- name: sohre hosts
+- name: dns hosts
   hosts: dns
   gather_facts: true
   roles:

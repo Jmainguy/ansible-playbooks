@@ -1,0 +1,33 @@
+---
+dns_primary: ns1.vpsaddict.com
+dns_primary_ip: 139.144.22.238
+dns_primary_ip6: "2600:3c02::f03c:93ff:fec8:ddca"
+
+dns_slaves:
+  - name: ns2.vpsaddict.com
+    ipv4: 68.183.148.253
+    ipv6: "2604:a880:800:14::2fda:a000"
+  - name: ns3.vpsaddict.com
+    ipv4: 198.98.59.14
+    ipv6: "2605:6400:10:675::1"
+
+dns_zones:
+  - vpsaddict.com
+  - standouthost.com
+  - jmainguy.com
+  - soh.re
+  - rightwaypropertycare.com
+  - ahhc.org
+  - augustine.care
+  - harborvane.io
+  - harborvane.com
+  - verboseresume.com
+  - ninevoltnine.com
+
+dns_tsig_key_name: cert-manager
+dns_tsig_key_path: /etc/bind/keys/cert-manager.key
+
+dns_bind_zones_dir: /var/lib/bind/zones
+dns_bind_slaves_dir: /var/lib/bind/slaves
+
+dns_is_primary: "{{ inventory_hostname == dns_primary }}"

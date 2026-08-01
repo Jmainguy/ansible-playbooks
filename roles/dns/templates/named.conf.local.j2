@@ -1,0 +1,34 @@
+{% if dns_is_primary %}
+include "{{ dns_tsig_key_path }}";
+{% endif %}
+
+{% for zone in dns_zones %}
+zone "{{ zone }}" {
+{% if dns_is_primary %}
+    type master;
+    file "{{ dns_bind_zones_dir }}/{{ zone }}";
+    allow-transfer {
+{% for slave in dns_slaves %}
+        {{ slave.ipv4 }};
+        {{ slave.ipv6 }};
+{% endfor %}
+    };
+    also-notify {
+{% for slave in dns_slaves %}
+        {{ slave.ipv4 }};
+        {{ slave.ipv6 }};
+{% endfor %}
+    };
+    allow-update { key "{{ dns_tsig_key_name }}"; };
+{% else %}
+    type slave;
+    masters {
+        {{ dns_primary_ip }};
+        {{ dns_primary_ip6 }};
+    };
+    file "{{ dns_bind_slaves_dir }}/{{ zone }}";
+    masterfile-format text;
+{% endif %}
+};
+
+{% endfor %}

@@ -1,0 +1,24 @@
+# ClusterIssuer for Let's Encrypt DNS-01 via RFC2136.
+# Create the TSIG secret in cert-manager first (key from ns1:/etc/bind/keys/cert-manager.key).
+#
+#   kubectl apply -f manifests/cert-manager-clusterissuer-rfc2136.yaml
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-dns-rfc2136
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: jon@standouthost.com
+    privateKeySecretRef:
+      name: letsencrypt-dns-rfc2136-account-key
+    solvers:
+      - dns01:
+          rfc2136:
+            nameserver: 139.144.22.238:53
+            tsigSecretSecretRef:
+              name: rfc2136-tsig-cert-manager
+              key: tsig-secret
+            tsigKeyName: cert-manager
+            tsigAlgorithm: HMACSHA256

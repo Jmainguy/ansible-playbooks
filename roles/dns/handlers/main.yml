@@ -1,5 +1,5 @@
 ---
-- name: Restart nsd
+- name: Restart bind
   ansible.builtin.service:
-    name: nsd
+    name: bind9
     state: restarted

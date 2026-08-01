@@ -1,0 +1,10 @@
+---
+- name: Copy zone files to primary
+  ansible.builtin.copy:
+    src: "zones/{{ item }}"
+    dest: "{{ dns_bind_zones_dir }}/{{ item }}"
+    owner: bind
+    group: bind
+    mode: "0644"
+  loop: "{{ dns_zones }}"
+  notify: Restart bind

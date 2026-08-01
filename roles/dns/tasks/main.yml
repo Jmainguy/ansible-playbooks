@@ -1,32 +1,43 @@
 ---
-- name: Ensure /etc/nsd directory exists
-  ansible.builtin.file:
-    path: /etc/nsd
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
+- name: Install BIND
+  ansible.builtin.apt:
+    name: bind9
+    state: present
 
-- name: Copy NSD configuration files
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/etc/nsd/{{ item }}"
-    owner: root
-    group: root
-    mode: '0644'
+- name: Ensure BIND directories exist
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
   loop:
-    - jmainguy.com
-    - nsd.conf
-    - rightwaypropertycare.com
-    - soh.re
-    - southridingagent.com
-    - southridingagents.com
-    - standouthost.com
-    - vpsaddict.com
-    - ahhc.org
-    - augustine.care
-    - harborvane.io
-    - harborvane.com
-    - verboseresume.com
-    - ninevoltnine.com
-  notify: Restart nsd
+    - { path: "{{ dns_bind_zones_dir }}", owner: bind, group: bind, mode: "0755" }
+    - { path: /etc/bind/keys, owner: root, group: bind, mode: "0750" }
+    - { path: "{{ dns_bind_slaves_dir }}", owner: bind, group: bind, mode: "0755" }
+
+- name: Configure RFC2136 TSIG key on primary
+  ansible.builtin.import_tasks: tsig.yml
+  when: dns_is_primary
+
+- name: Deploy zone files on primary
+  ansible.builtin.import_tasks: zones.yml
+  when: dns_is_primary
+
+- name: Deploy BIND configuration
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: bind
+    mode: "0644"
+  loop:
+    - { src: named.conf.options.j2, dest: /etc/bind/named.conf.options }
+    - { src: named.conf.local.j2, dest: /etc/bind/named.conf.local }
+  notify: Restart bind
+
+- name: Ensure BIND is running and enabled
+  ansible.builtin.service:
+    name: bind9
+    state: started
+    enabled: true
