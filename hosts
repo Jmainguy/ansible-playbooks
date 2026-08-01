@@ -1,6 +1,5 @@
 [all:children]
 dns
-sohre
 common
 k3s
 
@@ -16,9 +15,3 @@ k3s.soh.re
 
 [common]
 piaware
-vm1.soh.re wireguard_ip=10.0.0.9
-vm2.soh.re wireguard_ip=10.0.0.10
-
-[sohre]
-vm1.soh.re
-vm2.soh.re
