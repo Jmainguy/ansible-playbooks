@@ -7,4 +7,6 @@
     group: bind
     mode: "0644"
   loop: "{{ dns_zones }}"
-  notify: Restart bind
+  notify:
+    - Remove stale zone journals
+    - Restart bind

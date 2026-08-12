@@ -1,4 +1,11 @@
 ---
+- name: Remove stale zone journals
+  ansible.builtin.file:
+    path: "{{ dns_bind_zones_dir }}/{{ item }}.jnl"
+    state: absent
+  loop: "{{ dns_zones }}"
+  when: dns_is_primary
+
 - name: Restart bind
   ansible.builtin.service:
     name: bind9
