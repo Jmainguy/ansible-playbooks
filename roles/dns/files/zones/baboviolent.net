@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN baboviolent.net.
 
 @       IN      SOA     ns1.vpsaddict.com. jon.soh.re. (
-                        2026081902      ; serial number YYYYMMDDnn
+                        2026082001      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -23,6 +23,8 @@ server          IN      CNAME   homelab.soh.re.
 nc-ctf          IN      CNAME   homelab.soh.re.
 nc-tdm          IN      CNAME   homelab.soh.re.
 nc-ffa          IN      CNAME   homelab.soh.re.
+nc-chp          IN      CNAME   homelab.soh.re.
 de-ctf          IN      A       130.61.223.167
 de-tdm          IN      A       130.61.223.167
 de-ffa          IN      A       130.61.223.167
+de-chp          IN      A       130.61.223.167
