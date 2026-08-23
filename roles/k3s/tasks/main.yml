@@ -148,6 +148,7 @@
           - '{{ inventory_hostname }}'
           - --ignore-daemonsets
           - --delete-emptydir-data
+          - --disable-eviction
           - --timeout=15m
       delegate_to: '{{ k3s_server_inventory_host }}'
       changed_when: true
