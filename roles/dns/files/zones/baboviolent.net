@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN baboviolent.net.
 
 @       IN      SOA     ns1.vpsaddict.com. jon.soh.re. (
-                        2026082002      ; serial number YYYYMMDDnn
+                        2026082005      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -16,6 +16,12 @@ $ORIGIN baboviolent.net.
 @               IN      NS      ns3.vpsaddict.com.
 @               IN      A       68.183.148.253
 @               IN      AAAA    2604:a880:800:14::2fda:a000
+@               IN      TXT     "zoho-verification=zb42701693.zmverify.zoho.com"
+@               IN      MX      10 mx.zoho.com.
+@               IN      MX      20 mx2.zoho.com.
+@               IN      MX      50 mx3.zoho.com.
+@               IN      TXT     "v=spf1 include:zohomail.com ~all"
+zmail._domainkey IN      TXT     "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRrn5MPViH7dXiu3a5YB6tZ3cPGejiYGY9zueJXYXdvf94hg3iQ4oF3p7GcZYPj6gvnCIZNMEVM8l3owbu+TnTggkFRBNIQa09ombLrALCHnOVy9Q/JpWjeY4TDGxTtSjID/DpK5P40LU3ZGXweGZ2ihwtHTfkNgmjqdxZccAK+QIDAQAB"
 www             IN      CNAME   homelab.soh.re.
 play            IN      CNAME   homelab.soh.re.
 relay           IN      CNAME   homelab.soh.re.
@@ -24,9 +30,11 @@ nc-ctf          IN      CNAME   homelab.soh.re.
 nc-tdm          IN      CNAME   homelab.soh.re.
 nc-ffa          IN      CNAME   homelab.soh.re.
 nc-chp          IN      CNAME   homelab.soh.re.
+nc-koth         IN      CNAME   homelab.soh.re.
 nc-sandbox      IN      CNAME   homelab.soh.re.
 de-ctf          IN      A       130.61.223.167
 de-tdm          IN      A       130.61.223.167
 de-ffa          IN      A       130.61.223.167
 de-chp          IN      A       130.61.223.167
+de-koth         IN      A       130.61.223.167
 de-sandbox      IN      A       130.61.223.167
