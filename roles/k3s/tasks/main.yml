@@ -63,6 +63,17 @@
     - k3s-reboot-fix
     - k3s-upgrade
 
+- name: Create the k3s configuration directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags:
+    - k3s-reboot-fix
+    - k3s-upgrade
+
 - name: Install the cluster join token on agents
   ansible.builtin.copy:
     content: "{{ k3s_cluster_token.content | b64decode | trim }}\n"
