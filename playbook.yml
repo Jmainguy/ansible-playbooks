@@ -9,6 +9,8 @@
 - name: k3s hosts
   hosts: k3s
   gather_facts: true
+  order: inventory
+  serial: 1
   roles:
     - k3s
 

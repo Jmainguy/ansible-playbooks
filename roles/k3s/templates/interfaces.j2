@@ -1,0 +1,20 @@
+# This file is managed by Ansible. Local changes will be overwritten.
+
+source /etc/network/interfaces.d/*
+
+auto lo
+iface lo inet loopback
+
+# Primary network interface, named persistently by MAC address.
+{% if k3s_primary_nic_config == 'static' %}
+auto {{ k3s_primary_nic_name }}
+iface {{ k3s_primary_nic_name }} inet static
+  address {{ k3s_primary_nic_address }}
+  netmask {{ k3s_primary_nic_netmask }}
+  gateway {{ k3s_primary_nic_gateway }}
+  dns-nameservers {{ k3s_primary_nic_dns_nameservers }}
+{% elif k3s_primary_nic_config == 'dhcp' %}
+allow-hotplug {{ k3s_primary_nic_name }}
+iface {{ k3s_primary_nic_name }} inet dhcp
+iface {{ k3s_primary_nic_name }} inet6 auto
+{% endif %}

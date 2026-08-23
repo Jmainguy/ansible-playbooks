@@ -1,0 +1,9 @@
+k3s_primary_nic_mac: c8:60:00:a1:6d:81
+k3s_primary_nic_name: eth0
+k3s_primary_nic_config: static
+k3s_primary_nic_address: 192.168.86.150
+k3s_primary_nic_netmask: 255.255.255.0
+k3s_primary_nic_gateway: 192.168.86.1
+k3s_primary_nic_dns_nameservers: 192.168.86.1
+k3s_role: server
+k3s_node_ip: 192.168.86.150

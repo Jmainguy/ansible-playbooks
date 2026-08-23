@@ -25,3 +25,165 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Give the primary NIC a stable name
+  ansible.builtin.template:
+    src: primary-nic.link.j2
+    dest: "/etc/systemd/network/10-{{ k3s_primary_nic_name }}.link"
+    owner: root
+    group: root
+    mode: '0644'
+  when:
+    - k3s_primary_nic_mac is defined
+    - k3s_primary_nic_name is defined
+  tags:
+    - k3s-reboot-fix
+
+- name: Use the stable NIC name in ifupdown configuration
+  ansible.builtin.template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: '0644'
+  when:
+    - k3s_primary_nic_name is defined
+    - k3s_primary_nic_config is defined
+  tags:
+    - k3s-reboot-fix
+
+- name: Read the cluster join token from the server
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  delegate_to: '{{ k3s_server_inventory_host }}'
+  register: k3s_cluster_token
+  when: k3s_role == 'agent'
+  no_log: true
+  tags:
+    - k3s-reboot-fix
+    - k3s-upgrade
+
+- name: Install the cluster join token on agents
+  ansible.builtin.copy:
+    content: "{{ k3s_cluster_token.content | b64decode | trim }}\n"
+    dest: /etc/rancher/k3s/agent-token
+    owner: root
+    group: root
+    mode: '0600'
+  when: k3s_role == 'agent'
+  no_log: true
+  tags:
+    - k3s-reboot-fix
+    - k3s-upgrade
+
+- name: Install the trusted k3s systemd unit
+  ansible.builtin.template:
+    src: k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload systemd configuration
+  tags:
+    - k3s-reboot-fix
+    - k3s-upgrade
+
+- name: Apply the trusted k3s unit before an upgrade
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - k3s-upgrade
+
+- name: Read the installed k3s version
+  ansible.builtin.command: /usr/local/bin/k3s --version
+  register: k3s_installed_version
+  changed_when: false
+  check_mode: false
+  tags:
+    - k3s-upgrade
+
+- name: Upgrade k3s safely
+  when:
+    - not ansible_check_mode
+    - k3s_version not in k3s_installed_version.stdout
+  tags:
+    - k3s-upgrade
+  block:
+    - name: Download and verify the new k3s binary
+      ansible.builtin.get_url:
+        url: "https://github.com/k3s-io/k3s/releases/download/{{ k3s_version | urlencode }}/k3s"
+        dest: "/usr/local/bin/.k3s-{{ k3s_version }}"
+        checksum: "sha256:{{ k3s_binary_sha256 }}"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Cordon the node
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/k3s
+          - kubectl
+          - cordon
+          - '{{ inventory_hostname }}'
+      delegate_to: '{{ k3s_server_inventory_host }}'
+      register: k3s_cordon
+      changed_when: "'already cordoned' not in k3s_cordon.stdout"
+
+    - name: Drain the node
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/k3s
+          - kubectl
+          - drain
+          - '{{ inventory_hostname }}'
+          - --ignore-daemonsets
+          - --delete-emptydir-data
+          - --timeout=15m
+      delegate_to: '{{ k3s_server_inventory_host }}'
+      changed_when: true
+
+    - name: Stop k3s after the node is drained
+      ansible.builtin.systemd:
+        name: k3s
+        state: stopped
+
+    - name: Install the verified k3s binary
+      ansible.builtin.copy:
+        src: "/usr/local/bin/.k3s-{{ k3s_version }}"
+        dest: /usr/local/bin/k3s
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Reboot after the k3s upgrade
+      ansible.builtin.reboot:
+        msg: Rebooting after a controlled k3s upgrade
+        reboot_timeout: 900
+        post_reboot_delay: 15
+
+    - name: Wait for the upgraded node to become Ready
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/k3s
+          - kubectl
+          - wait
+          - node/{{ inventory_hostname }}
+          - --for=condition=Ready
+          - --timeout=10m
+      delegate_to: '{{ k3s_server_inventory_host }}'
+      changed_when: false
+
+    - name: Uncordon the upgraded node
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/k3s
+          - kubectl
+          - uncordon
+          - '{{ inventory_hostname }}'
+      delegate_to: '{{ k3s_server_inventory_host }}'
+      changed_when: true
+
+    - name: Remove the staged k3s binary
+      ansible.builtin.file:
+        path: "/usr/local/bin/.k3s-{{ k3s_version }}"
+        state: absent
