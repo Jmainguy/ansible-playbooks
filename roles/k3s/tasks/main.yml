@@ -102,6 +102,7 @@
 - name: Apply the trusted k3s unit before an upgrade
   ansible.builtin.meta: flush_handlers
   tags:
+    - never
     - k3s-upgrade
 
 - name: Read the installed k3s version
@@ -110,6 +111,7 @@
   changed_when: false
   check_mode: false
   tags:
+    - never
     - k3s-upgrade
 
 - name: Upgrade k3s safely
@@ -117,6 +119,7 @@
     - not ansible_check_mode
     - k3s_version not in k3s_installed_version.stdout
   tags:
+    - never
     - k3s-upgrade
   block:
     - name: Download and verify the new k3s binary
