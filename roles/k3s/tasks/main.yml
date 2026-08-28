@@ -37,6 +37,7 @@
     - k3s_primary_nic_mac is defined
     - k3s_primary_nic_name is defined
   tags:
+    - never
     - k3s-reboot-fix
 
 - name: Use the stable NIC name in ifupdown configuration
@@ -50,6 +51,7 @@
     - k3s_primary_nic_name is defined
     - k3s_primary_nic_config is defined
   tags:
+    - never
     - k3s-reboot-fix
 
 - name: Read the cluster join token from the server
@@ -60,6 +62,7 @@
   when: k3s_role == 'agent'
   no_log: true
   tags:
+    - never
     - k3s-reboot-fix
     - k3s-upgrade
 
@@ -71,6 +74,7 @@
     group: root
     mode: '0755'
   tags:
+    - never
     - k3s-reboot-fix
     - k3s-upgrade
 
@@ -84,6 +88,7 @@
   when: k3s_role == 'agent'
   no_log: true
   tags:
+    - never
     - k3s-reboot-fix
     - k3s-upgrade
 
@@ -96,6 +101,7 @@
     mode: '0644'
   notify: Reload systemd configuration
   tags:
+    - never
     - k3s-reboot-fix
     - k3s-upgrade
 

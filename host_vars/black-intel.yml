@@ -1,3 +1,4 @@
+ansible_python_interpreter: /usr/bin/python3
 k3s_primary_nic_mac: c8:60:00:a1:6d:81
 k3s_primary_nic_name: eth0
 k3s_primary_nic_config: static
