@@ -24,6 +24,7 @@ dns_zones:
   - harborvane.com
   - verboseresume.com
   - ninevoltnine.com
+  - flowboard.studio
 
 dns_tsig_key_name: cert-manager
 dns_tsig_key_path: /etc/bind/keys/cert-manager.key
