@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN flowboard.studio.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.flowboard.studio. (
-                        2026090401      ; serial number YYYYMMDDnn
+                        2026091202      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -14,7 +14,14 @@ $ORIGIN flowboard.studio.
 @               IN         NS      ns1.vpsaddict.com.
 @               IN         NS      ns2.vpsaddict.com.
 @               IN         NS      ns3.vpsaddict.com.
+@               IN      MX      10 mx.zoho.com.
+@               IN      MX      20 mx2.zoho.com.
+@               IN      MX      50 mx3.zoho.com.
+@               IN      TXT     "v=spf1 include:zohomail.com ~all"
+@               IN      TXT     "zoho-verification=zb93393246.zmverify.zoho.com"
+_dmarc          IN      TXT     "v=DMARC1; p=none"
+zmail._domainkey IN     TXT     "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDzm/iXriKw3t37/wTLxNN00seo0W2zuVhBqsd1ZAVa74ChFGLh3bNbncQ/1kXKB6fGIS5hHl2HpdvNbu/3fw1WqC2XgebS5wr2h5Db5QL1A2+aY6oek6Z++LaO5D7le/DvpEFQp5PIc2WDCpOqCJXwpp4MlrCdFZ14/OEnISGf4QIDAQAB"
 
-                IN      A       68.183.148.253
-                IN      AAAA    2604:a880:800:14::2fda:a000
+@               IN      A       68.183.148.253
+@               IN      AAAA    2604:a880:800:14::2fda:a000
 www             IN      CNAME   homelab.soh.re.
