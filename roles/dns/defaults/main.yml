@@ -25,6 +25,7 @@ dns_zones:
   - verboseresume.com
   - ninevoltnine.com
   - flowboard.studio
+  - barnwide.com
 
 dns_tsig_key_name: cert-manager
 dns_tsig_key_path: /etc/bind/keys/cert-manager.key
