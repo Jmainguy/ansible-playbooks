@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN flowboard.studio.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.flowboard.studio. (
-                        2026091202      ; serial number YYYYMMDDnn
+                        2026100201      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
