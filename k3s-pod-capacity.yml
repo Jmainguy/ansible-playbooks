@@ -1,0 +1,64 @@
+---
+- name: Configure K3s pod capacity without replacing service options
+  hosts: k3s
+  gather_facts: false
+  serial: 1
+  any_errors_fatal: true
+  vars:
+    k3s_capacity_targets:
+      black-intel: {context: homelab-k3s, node: black-intel}
+      white-intel: {context: homelab-k3s, node: white-intel}
+      k3s.soh.re: {context: oracle-arm64-k3s, node: k3s-soh-re}
+  tasks:
+    - name: Require the K3s kubelet configuration directory
+      ansible.builtin.stat:
+        path: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/00-k3s-defaults.conf
+      register: k3s_kubelet_defaults
+
+    - name: Validate the target and pod limit
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname in k3s_capacity_targets
+          - k3s_kubelet_defaults.stat.exists
+          - k3s_max_pods | int > 0
+          - k3s_max_pods | int <= 250
+
+    - name: Configure the kubelet pod limit
+      ansible.builtin.copy:
+        dest: /var/lib/rancher/k3s/agent/etc/kubelet.conf.d/20-pod-capacity.conf
+        content: |
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          kind: KubeletConfiguration
+          maxPods: {{ k3s_max_pods | int }}
+        owner: root
+        group: root
+        mode: '0644'
+      register: k3s_capacity_config
+
+    - name: Restart K3s to apply the pod limit
+      ansible.builtin.systemd:
+        name: k3s
+        state: restarted
+      when: k3s_capacity_config.changed
+
+    - name: Verify node readiness and pod capacity before continuing
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - --context
+          - '{{ k3s_capacity_targets[inventory_hostname].context }}'
+          - --request-timeout=10s
+          - get
+          - node
+          - '{{ k3s_capacity_targets[inventory_hostname].node }}'
+          - '-o=jsonpath={.status.allocatable.pods} {.status.conditions[?(@.type=="Ready")].status}'
+      delegate_to: localhost
+      become: false
+      register: k3s_capacity_status
+      changed_when: false
+      until:
+        - k3s_capacity_status.rc == 0
+        - k3s_capacity_status.stdout == (k3s_max_pods | string) ~ ' True'
+      retries: 30
+      delay: 10
+      when: not ansible_check_mode
