@@ -4,7 +4,7 @@ $TTL 3600
 $ORIGIN standouthost.com.
 
 @       IN      SOA     ns1.vpsaddict.com.        jon.standouthost.com. (
-                        2026090101      ; serial number YYYYMMDDnn
+                        2026101201      ; serial number YYYYMMDDnn
                         14400           ; Refresh
                         3600            ; Retry
                         1209600         ; Expire
@@ -29,3 +29,5 @@ slides          IN      CNAME   homelab.soh.re.
 mainguy.com.preview IN  CNAME   homelab.soh.re.
 mainguy.com.v2.preview IN CNAME   homelab.soh.re.
 zmail._domainkey IN	TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC0/4ia1N2XVfTw7emk6dqbjvIatRK3RipuYGQ56obm0ueYRDOxnnvRp/i0/UCYvdY6dDGhI4CGpKoGg7C1mxCZRv6yGHirxCm2rAFo3rT0Z0yR+aVLF6WcUUW4Efb+XUVbWRYxrCSP/4BBfIEauab2Lgcq0sI1/9vLhDt0NkBYYwIDAQAB"
+
+switchboard      IN      CNAME   homelab.soh.re.
